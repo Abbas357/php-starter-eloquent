@@ -230,7 +230,7 @@ function abort($code) {
     exit;
 }
 
-function envd($key, $default = null)
+function envVar($key, $default = null)
 {
     static $envVars = null;
 

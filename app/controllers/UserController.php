@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Support\Storage;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller 
 {
@@ -93,7 +94,7 @@ class UserController extends Controller
     }
 
     public function show($id) {
-        $user = User::where('status', 0)->select('name', 'email')->where('office', 'IT')->where('designation', 'Superintendent')->get();
+        $user = DB::table('users')->count();
         return response()->json(['users' => $user]);
     }
 
