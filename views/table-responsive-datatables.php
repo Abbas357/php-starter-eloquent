@@ -1,5 +1,5 @@
 <?php
-require_once '../layout/base.php';
+view_path('layout.base');
 layoutTop('Datatables', [
   "public/vendor/datatables/extensions/responsive/responsive.bootstrap4.min.css"
 ]);

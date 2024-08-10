@@ -16,7 +16,7 @@ Router::get('/users', 'UserController@index')->name('users.index');
 Router::get('/users-data', 'UserController@data')->name('users.data');
 Router::get('/users/create', 'UserController@create')->name('users.create');
 Router::post('/users', 'UserController@store')->name('users.store');
-Router::get('/users/{id}', 'UserController@show')->name('users.show');
+Router::get('/users/{user}', 'UserController@show')->name('users.show');
 Router::get('/users/{id}/edit', 'UserController@edit')->name('users.edit');
 Router::patch('/users/{id}', 'UserController@update')->name('users.update');
 Router::delete('/users/{id}', 'UserController@delete')->name('users.delete');

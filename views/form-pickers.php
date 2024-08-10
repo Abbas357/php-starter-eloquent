@@ -1,5 +1,5 @@
 <?php
-require_once '../layout/base.php';
+view_path('layout.base');
 layoutTop('Input Pickers', [
   "public/vendor/bootstrap-select/css/bootstrap-select.min.css",
   "public/vendor/flatpickr/flatpickr.min.css",

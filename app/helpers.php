@@ -73,7 +73,7 @@ function redirect($path)
     exit();
 }
 
-function toRoute($name, $params = [])
+function route($name, $params = [])
 {
     $routeUrl = \App\Support\Router::route($name, $params);
     echo config('app.url') . $routeUrl;
@@ -89,7 +89,7 @@ function redirectToRoute($name, $parameters = [])
     foreach ($parameters as $key => $value) {
         $uri = str_replace("{{$key}}", $value, $uri);
     }
-    header("Location:" . config('app.url') .'/'. trim($uri, '/'));
+    header("Location:" . config('app.url') . '/' . trim($uri, '/'));
     exit;
 }
 
@@ -103,10 +103,71 @@ function request_url()
     }
 }
 
+function app_path($file = null) {
+    $baseDir = __DIR__ . '/../app/';
+
+    if ($file === null) {
+        return $baseDir;
+    }
+
+    $path = str_replace('.', '/', $file);
+    $fullPath = $baseDir . "{$path}.php";
+
+    if (file_exists($fullPath)) {
+        require_once $fullPath;
+    } else {
+        throw new Exception("File not found: " . $fullPath);
+    }
+}
+
+function public_path($file = null) {
+    $baseDir = __DIR__ . '/../public/';
+
+    if ($file === null) {
+        return $baseDir;
+    }
+
+    $path = str_replace('.', '/', $file);
+    $fullPath = $baseDir . "{$path}.php";
+
+    if (file_exists($fullPath)) {
+        require_once $fullPath;
+    } else {
+        throw new Exception("File not found: " . $fullPath);
+    }
+}
+
+function view_path($file = null) {
+    $baseDir = __DIR__ . '/../views/';
+
+    if ($file === null) {
+        return $baseDir;
+    }
+
+    $path = str_replace('.', '/', $file);
+    $fullPath = $baseDir . "{$path}.php";
+
+    if (file_exists($fullPath)) {
+        require_once $fullPath;
+    } else {
+        throw new Exception("File not found: " . $fullPath);
+    }
+}
+
 function hasActive($route, $output = 'has-active')
 {
     $currentRoute = substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '/', strpos($_SERVER['REQUEST_URI'], '/') + 1) + 1);
     return $currentRoute === trim($route, '/') ? $output : '';
+}
+
+function request_errors()
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    $errors = $_SESSION['validation_errors'] ?? [];
+    unset($_SESSION['validation_errors']);
+    return $errors;
 }
 
 function view($viewName, $data = [])
@@ -160,7 +221,7 @@ function config($key, $default = null)
 {
     static $config;
     if (!$config) {
-        $config = require __DIR__ . '/config.php';
+        $config = require __DIR__ . '/../config/config.php';
     }
     $keys = explode('.', $key);
     $value = $config;
@@ -178,7 +239,7 @@ function config($key, $default = null)
 
 function asset($file, $echo = true)
 {
-    $url = config('app.url') .'/'. $file;
+    $url = config('app.url') . '/' . $file;
     if ($echo) {
         echo $url;
         return;
@@ -186,7 +247,8 @@ function asset($file, $echo = true)
     return $url;
 }
 
-function old($key, $default = '') {
+function old($key, $default = '')
+{
     if (isset($_SESSION['old_input'][$key])) {
         return $_SESSION['old_input'][$key];
     }
@@ -204,7 +266,8 @@ function method($httpMethod)
     echo '';
 }
 
-function abort($code) {
+function abort($code)
+{
     $viewsPath = $viewsPath = '../views/errors/';
     http_response_code($code);
     switch ($code) {

@@ -2,7 +2,6 @@
 namespace App;
 require_once __DIR__ . '/../vendor/autoload.php';
 use Illuminate\Database\Capsule\Manager as Capsule;
-
 ob_start();
 require 'database/connection.php';
 global $pdo;

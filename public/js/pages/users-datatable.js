@@ -37,24 +37,19 @@ var AdvanceDataTablesDemo =
       {
         key: "init",
         value: function init() {
-          // event handlers
           this.table = this.table();
           this.globalSearch();
           this.columnSearch();
-          this.selecter();
-          this.clearSelected(); // filter columns
-
           this.addFilterRow();
           this.removeFilterRow();
-          this.clearFilter(); // add buttons
-
+          this.clearFilter();
           this.table.buttons().container().appendTo("#dt-buttons").unwrap();
         },
       },
       {
         key: "table",
         value: function table() {
-          return $("#myTable").DataTable({
+          return $("#users-datatable").DataTable({
             dom: "<'text-muted'Bi>\n        <'table-responsive'tr>\n        <'mt-4'p>",
             buttons: [
               "copyHtml5",
@@ -76,15 +71,14 @@ var AdvanceDataTablesDemo =
             processing: true,
             serverSide: true,
             ajax: {
-              url: "http://localhost/cwmis/users-data",
+              url: usersUrl,
               type: "GET",
               data: function (d) {
-                // Include filter columns in the request
                 $("#filter-columns .filter-row").each(function () {
                   var column = $(this).find(".filter-column").val();
                   var value = $(this).find(".filter-value").val();
                   if (column && value) {
-                    d.columns[column].search.value = value; // Set the value for the corresponding column
+                    d.columns[column].search.value = value;
                   }
                 });
               },
@@ -125,18 +119,6 @@ var AdvanceDataTablesDemo =
             ],
             columnDefs: [
               {
-                targets: 0,
-                render: function render(data, type, row, meta) {
-                  return '<div class="custom-control custom-control-nolabel custom-checkbox">\n            <input type="checkbox" class="custom-control-input" name="selectedRow[]" id="p'
-                    .concat(row.id, '" value="')
-                    .concat(
-                      row.id,
-                      '">\n            <label class="custom-control-label" for="p'
-                    )
-                    .concat(row.id, '"></label>\n          </div>');
-                },
-              },
-              {
                 targets: 1,
                 render: function render(data, type, row, meta) {
                   return '<a href="#'
@@ -172,10 +154,10 @@ var AdvanceDataTablesDemo =
         value: function globalSearch() {
           var self = this;
           $("#table-search").on("keyup focus", function (e) {
-            var value = $("#table-search").val(); // clear selected rows
+            var value = $("#table-search").val();
 
             if (value.length && e.type === "keyup") {
-              self.clearSelectedRows();
+
             }
 
             self.table.search(value).draw();
@@ -237,7 +219,7 @@ var AdvanceDataTablesDemo =
 
                 pattern = "^(" + exp + ")$";
               })();
-            } // reset search term
+            }
 
             if (e.type === "change" && $(e.target).is("select")) {
               filterRow.find(".filter-value").val("").trigger("keyup");
@@ -251,7 +233,6 @@ var AdvanceDataTablesDemo =
         key: "addFilterRow",
         value: function addFilterRow() {
           $("#add-filter-row").on("click", function () {
-            // get template from #filter-columns
             var rowTmpl = $("#filter-columns").children().first().clone();
             rowTmpl.find("select").prop("selectedIndex", 0);
             rowTmpl.find("input").val("");
@@ -264,10 +245,9 @@ var AdvanceDataTablesDemo =
         value: function removeFilterRow() {
           var self = this;
           $(document).on("click", ".remove-filter-row", function () {
-            // get filter row
-            var $row = $(this).parents(".filter-row"); // clear search value
+            var $row = $(this).parents(".filter-row");
 
-            $row.find(".filter-value").val("").trigger("keyup"); // remove row
+            $row.find(".filter-value").val("").trigger("keyup");
 
             if (self.isRemovableRow()) {
               $row.remove();
@@ -286,95 +266,17 @@ var AdvanceDataTablesDemo =
         value: function clearFilter() {
           var self = this;
           $(document).on("click", "#clear-filter", function () {
-            // hide modal
-            $("#modalFilterColumns").modal("hide"); // reset selects and input
-
+            $("#modalFilterColumns").modal("hide");
             $("#filter-columns").find("select").prop("selectedIndex", 0);
-            $("#filter-columns").find("input").val(""); // reset search term
-
+            $("#filter-columns").find("input").val("");
             self.table.columns().search("").draw();
           });
-        },
-      },
-      {
-        key: "selecter",
-        value: function selecter() {
-          var self = this;
-          $(document)
-            .on("change", "#check-handle", function () {
-              var isChecked = $(this).prop("checked");
-              $('input[name="selectedRow[]"]').prop("checked", isChecked); // get info
-
-              self.getSelectedInfo();
-            })
-            .on("change", 'input[name="selectedRow[]"]', function () {
-              var $selectors = $('input[name="selectedRow[]"]');
-              var $selectedRow = $(
-                'input[name="selectedRow[]"]:checked'
-              ).length;
-              var prop =
-                $selectedRow === $selectors.length
-                  ? "checked"
-                  : "indeterminate"; // reset props
-
-              $("#check-handle")
-                .prop("indeterminate", false)
-                .prop("checked", false);
-
-              if ($selectedRow) {
-                $("#check-handle").prop(prop, true);
-              } // get info
-
-              self.getSelectedInfo();
-            });
-        },
-      },
-      {
-        key: "clearSelected",
-        value: function clearSelected() {
-          var self = this; // clear selected rows
-
-          $("#myTable").on("page.dt", function () {
-            self.clearSelectedRows();
-          });
-          $("#clear-search").on("click", function () {
-            self.clearSelectedRows();
-          });
-        },
-      },
-      {
-        key: "getSelectedInfo",
-        value: function getSelectedInfo() {
-          var $selectedRow = $('input[name="selectedRow[]"]:checked').length;
-          var $info = $(".thead-btn");
-          var $badge = $("<span/>")
-            .addClass("selected-row-info text-muted pl-1")
-            .text("".concat($selectedRow, " selected")); // remove existing info
-
-          $(".selected-row-info").remove(); // add current info
-
-          if ($selectedRow) {
-            $info.prepend($badge);
-          }
-        },
-      },
-      {
-        key: "clearSelectedRows",
-        value: function clearSelectedRows() {
-          $("#check-handle")
-            .prop("indeterminate", false)
-            .prop("checked", false)
-            .trigger("change");
         },
       },
     ]);
 
     return AdvanceDataTablesDemo;
   })();
-/**
- * Keep in mind that your scripts may not always be executed after the theme is completely ready,
- * you might need to observe the `theme:load` event to make sure your scripts are executed after the theme is ready.
- */
 
 $(document).on("theme:init", function () {
   new AdvanceDataTablesDemo();

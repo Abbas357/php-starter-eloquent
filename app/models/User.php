@@ -6,18 +6,20 @@ class User extends Model
 {
     protected $guarded = [];
     protected $table = 'users';
-    // public function __construct()
-    // {
-    //     parent::__construct(pdo());
-    // }
 
-    // public function checkUsername($username)
-    // {
-    //     return $this->checkExistence('username', $username);
-    // }
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles');
+    }
 
-    // public function checkEmail($email)
-    // {
-    //     return $this->checkExistence('email', $email);
-    // }
+    public function hasPermission($permissionName)
+    {
+        foreach ($this->roles as $role) {
+            if ($role->permissions()->where('name', $permissionName)->exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

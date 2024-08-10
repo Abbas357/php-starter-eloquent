@@ -1,5 +1,5 @@
 <?php
-require_once '../layout/base.php';
+view_path('layout.base');
 layoutTop('Layout Blank', [
   "vendor/datatables/extensions/buttons/buttons.bootstrap4.min.css"
 ]);

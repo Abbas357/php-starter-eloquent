@@ -1,5 +1,5 @@
 <?php
-require_once '../layout/base.php';
+view_path('layout.base');
 layoutTop('Basic Form');
 ?>
 
@@ -15,16 +15,16 @@ layoutTop('Basic Form');
           </ol>
         </nav>
         <h1 class="page-title"> Add User</h1>
-        <div class="col-lg-4">
+        <div class="col">
         <?php
-          $messages = getFlash();
+          $messages = request_errors();
           if ($messages): ?>
-              <?php foreach ($messages as $type => $message): ?>
-                  <div class="alert alert-<?php echo $type; ?> alert-dismissible fade show">
-                    <button type="button" class="close" data-dismiss="alert">×</button> <strong><?php echo $type === 'success' ? 'Well done!' : 'Uh Oh!' ?></strong> <?php echo $message; ?>.
-                  </div>
-              <?php endforeach; ?>
-          <?php endif; ?>
+            <?php foreach ($messages as $name => $message): ?>
+                <div class="alert alert-danger alert-dismissible fade show">
+                  <button type="button" class="close" data-dismiss="alert">×</button> <strong><?= htmlspecialchars(ucfirst(str_replace('_', ' ', $name))) ?> </strong> <?= htmlspecialchars(ucfirst($message[0])) ?>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
         </div>
       </header>
       <div class="page-section">
@@ -34,7 +34,7 @@ layoutTop('Basic Form');
         <div class="card">
           <div class="card-body">
             <h3 class="card-title"> Fill all the fields</h3>
-            <form class="needs-validation" action="<?php toRoute('users.store') ?>" method="post" enctype="multipart/form-data" novalidate="">
+            <form class="needs-validation" action="<?php route('users.store') ?>" method="post" enctype="multipart/form-data" novalidate="">
               <div class="form-row">
                 <div class="col-md-6 mb-3">
                   <label for="validationTooltip01">Name<abbr title="Required">*</abbr></label>
@@ -101,7 +101,8 @@ layoutTop('Basic Form');
           </div>
         </div>
       </div>
-      <?php require_once '../includes/footer.php'; ?>
+      <?php view_path('includes.footer'); ?>
+      
     </div>
     <div class="page-sidebar page-sidebar-fixed">
       <header class="sidebar-header d-xl-none">

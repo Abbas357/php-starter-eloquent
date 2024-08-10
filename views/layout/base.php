@@ -1,5 +1,5 @@
 <?php
-require_once('../app/init.php');
+app_path('init');
 if (!authenticated()) redirect('login');
 function layoutTop($pageTitle = 'Page', $additionalCSS = [])
 {
@@ -8,7 +8,7 @@ function layoutTop($pageTitle = 'Page', $additionalCSS = [])
         <html lang='en'>
         <head>
             <title>$pageTitle | C&W Department, KP</title>";
-    require_once '../includes/head.php';
+        view_path('includes.head');
     if (!empty($additionalCSS)) {
         foreach ($additionalCSS as $css) {
             echo "<link rel='stylesheet' href='" . asset($css, false) . "'>";
@@ -17,8 +17,8 @@ function layoutTop($pageTitle = 'Page', $additionalCSS = [])
     echo "</head>
         <body>
             <div class='app'>";
-    require_once '../includes/topbar.php';
-    require_once '../includes/aside.php';
+        view_path('includes.topbar');
+        view_path('includes.aside');
     echo "<main class='app-main'>";
     $messages = getFlash();
     if ($messages) : ?>
@@ -39,10 +39,10 @@ function layoutTop($pageTitle = 'Page', $additionalCSS = [])
 
 function layoutBottom($additionalJS = [])
 {
-    require_once '../includes/footer.php';
+    view_path('includes.footer');
     echo "</main>
-            </div>";
-    require_once '../includes/scripts.php';
+            </div>";   
+    view_path('includes.scripts');
     if (!empty($additionalJS)) {
         foreach ($additionalJS as $script) {
             echo "<script src='" . asset($script, false) . "'></script>";

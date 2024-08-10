@@ -1,5 +1,5 @@
 <?php
-require_once '../layout/base.php';
+view_path('layout.base');
 layoutTop('Input Autocompletes', [
   "public/vendor/select2/css/select2.min.css",
   "public/vendor/tributejs/tribute.css",

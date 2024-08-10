@@ -1,5 +1,6 @@
 <?php
-require_once '../layout/base.php';
+view_path('layout.base');
+
 layoutTop('Home Page', [
   "public/vendor/flatpickr/flatpickr.min.css"
 ]);

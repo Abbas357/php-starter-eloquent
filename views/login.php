@@ -1,5 +1,5 @@
 <?php
-require_once '../layout/guest.php';
+view_path('layout.guest');
 layoutTop('Login', [
   "vendor/flatpickr/flatpickr.min.css"
 ]);
@@ -14,7 +14,7 @@ layoutTop('Login', [
     </h1>
     <p>Fill the Credentials</p>
   </header><!-- form -->
-  <form class="auth-form" action="<?php toRoute('auth.login') ?>" method="post">
+  <form class="auth-form" action="<?php route('auth.login') ?>" method="post">
     <!-- .form-group -->
     <div class="form-group">
     <?php if(isset($error)){

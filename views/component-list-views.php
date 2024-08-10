@@ -1,5 +1,5 @@
 <?php
-require_once '../layout/base.php';
+view_path('layout.base');
 layoutTop('List Views', [
   "public/vendor/jstree/themes/default/style.min.css",
   "public/vendor/toastr/toastr.min.css"

@@ -1,12 +1,11 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
 use App\Support\Storage;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
-class UserController extends Controller 
+class UserController extends Controller
 {
     public function index()
     {
@@ -18,7 +17,9 @@ class UserController extends Controller
         return view('users/create');
     }
 
-    public function data () {
+    public function data()
+    {
+        $user = User::where('office', 'IT');
         $searchable = ['name', 'email', 'designation', 'office'];
         $records = function ($record) {
             return [
@@ -29,60 +30,47 @@ class UserController extends Controller
                 'office' => $record->office
             ];
         };
-        
-        return $this->DataTable('users', $searchable, $records);
+
+        return $this->DataTable($user, $searchable, $records);
     }
 
     public function store()
-{
-    // Store old input for session
-    $_SESSION['old_input'] = request()->all();
+    {
+        request()->validate([
+            'name' => 'required|min:4|max:20|alpha',
+            'email' => 'required|email|unique:users,email',
+            'mobile_number' => 'required|number|mobile',
+            'office' => 'required',
+            'designation' => 'required',
+            'password' => 'required|strong_password',
+            'profile_pic' => 'nullable|file|image|valid_file',
+        ]);
 
-    // Retrieve input data
-    $email = request('email');
-    $password = request('password');
+        $file = request()->hasFile('profile_pic') ? request()->file('profile_pic') : null;
+        $profilePicPath = $this->handleFileUpload($file);
 
-    // Validation
-    if (empty($email) || empty($password)) {
-        setFlash('danger', 'Email and password are required fields.');
+        $user = User::create([
+            'name' => request('name'),
+            'email' => request('email'),
+            'password' => password_hash(request('password'), PASSWORD_BCRYPT),
+            'mobile_number' => request('mobile_number'),
+            'office' => request('office'),
+            'designation' => request('designation'),
+            'profile_pic' => $profilePicPath,
+        ]);
+
+        if ($user) {
+            setFlash('success', 'User created successfully with ID: ' . $user->id);
+        } else {
+            setFlash('danger', 'There was an error creating the user.');
+        }
+
         redirectToRoute('users.create');
-        return;
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        setFlash('danger', 'Invalid email format.');
-        redirectToRoute('users.create');
-        return;
-    }
 
-    // Handle file upload (if any)
-    $file = request()->hasFile('profile_pic') ? request()->file('profile_pic') : null;
-    $profilePicPath = $this->handleFileUpload($file);
-
-    // Create user using Eloquent
-    $user = User::create([
-        'name' => request('name'),
-        'email' => $email,
-        'password' => password_hash($password, PASSWORD_BCRYPT),
-        'mobile_number' => request('mobile_number'),
-        'office' => request('office'),
-        'designation' => request('designation'),
-        'profile_pic' => $profilePicPath,
-    ]);
-
-    // Check if user was created successfully
-    if ($user) {
-        unset($_SESSION['old_input']);
-        setFlash('success', 'User created successfully with ID: ' . $user->id);
-    } else {
-        setFlash('danger', 'There was an error creating the user.');
-    }
-
-    redirectToRoute('users.create');
-}
-
-
-    public function edit($id) {
+    public function edit($id)
+    {
         $user = User::find($id);
         return response()->json(['users' => $user]);
     }
@@ -93,15 +81,17 @@ class UserController extends Controller
         return response()->json(['users' => $user]);
     }
 
-    public function show($id) {
-        $user = DB::table('users')->count();
+    public function show($id)
+    {
+        $user = User::find($id);
         return response()->json(['users' => $user]);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $user = User::find($id);
         $deleted = $user->delete();
-        if($deleted) {
+        if ($deleted) {
             setFlash('success', 'User is delete successfully.');
             redirectToRoute('users.index');
         }

@@ -1,5 +1,5 @@
 <?php
-require_once '../layout/base.php';
+view_path('layout.base');
 layoutTop('Filter Columns', [
   "vendor/datatables/extensions/buttons/buttons.bootstrap4.min.css"
 ]);
@@ -141,31 +141,20 @@ layoutTop('Filter Columns', [
                 </div>
               </div>
             </div>
-            <table id="myTable" class="table">
+            <table id="users-datatable" class="table">
               <thead>
                 <tr>
-                  <th colspan="2" style="min-width: 320px;">
-                    <div class="thead-dd dropdown">
-                      <span class="custom-control custom-control-nolabel custom-checkbox"><input type="checkbox" class="custom-control-input" id="check-handle"> <label class="custom-control-label" for="check-handle"></label></span>
-                      <div class="thead-btn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-caret-down"></span>
-                      </div>
-                      <div class="dropdown-menu">
-                        <div class="dropdown-arrow"></div><a class="dropdown-item" href="#">Select all</a> <a class="dropdown-item" href="#">Unselect all</a>
-                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Bulk remove</a> <a class="dropdown-item" href="#">Bulk edit</a> <a class="dropdown-item" href="#">Separate actions</a>
-                      </div>
-                    </div> &nbsp; Name
+                  <th colspan="2" style="min-width: 250px;">
+                    Name
                   </th>
                   <th> Email </th>
                   <th> Designation </th>
                   <th> Office </th>
-                  <th> Office </th>
-                  <th style="width:100px; min-width:100px;"> &nbsp; </th>
+                  <th style="width:100px; min-width:100px;"> &nbsp; Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -181,7 +170,10 @@ layoutTop('Filter Columns', [
     </div>
   </div>
 </div>
-
+<script>
+  // var url = "<?php //route('users.edit', ['id' => 32]) ?>";
+  var usersUrl = "<?php route('users.data') ?>";
+</script>
 <?php
 layoutBottom([
   "vendor/datatables/jquery.dataTables.min.js",
@@ -190,6 +182,6 @@ layoutBottom([
   "vendor/datatables/extensions/buttons/buttons.html5.min.js",
   "vendor/datatables/extensions/buttons/buttons.print.min.js",
   "js/pages/dataTables.bootstrap.js",
-  "js/pages/datatables-filters-demo.js"
+  "js/pages/users-datatable.js"
 ]);
 ?>
