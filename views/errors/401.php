@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title> Page not found | C&W Department, KP </title>
-    <?php require_once '../includes/head.php'; ?>
+    <?php view_path('includes.head'); ?>
   </head>
   <body>
     <main id="notfound-state" class="empty-state empty-state-fullpage bg-black">

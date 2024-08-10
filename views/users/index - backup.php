@@ -1,7 +1,7 @@
 <?php
 view_path('layout.base');
 layoutTop('Filter Columns', [
-  "css/datatables.min.css"
+  "vendor/datatables/extensions/buttons/buttons.bootstrap4.min.css"
 ]);
 ?>
 <div class="wrapper">
@@ -176,6 +176,12 @@ layoutTop('Filter Columns', [
 </script>
 <?php
 layoutBottom([
-  "js/datatables.min.js"
+  "vendor/datatables/jquery.dataTables.min.js",
+  "vendor/datatables/extensions/buttons/dataTables.buttons.min.js",
+  "vendor/datatables/extensions/buttons/buttons.bootstrap4.min.js",
+  "vendor/datatables/extensions/buttons/buttons.html5.min.js",
+  "vendor/datatables/extensions/buttons/buttons.print.min.js",
+  "js/pages/dataTables.bootstrap.js",
+  "js/pages/users-datatable.js"
 ]);
 ?>

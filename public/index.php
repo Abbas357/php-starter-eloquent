@@ -1,7 +1,7 @@
 <?php
 
 require '../app/init.php';
-require '../web/routes.php';
+require '../routes/web.php';
 
 use App\Support\Router;
 

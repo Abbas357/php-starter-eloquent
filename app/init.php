@@ -1,17 +1,17 @@
 <?php
 namespace App;
 require_once __DIR__ . '/../vendor/autoload.php';
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager;
 ob_start();
 require 'database/connection.php';
 global $pdo;
 
-$capsule = new Capsule;
+$manager = new Manager;
 
-$capsule->addConnection(require 'database/conn.php');
+$manager->addConnection(require 'database/conn.php');
 
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
+$manager->setAsGlobal();
+$manager->bootEloquent();
 
 if (!isset($_SESSION)) {
     session_start();
