@@ -1,5 +1,19 @@
 <?php
 
+function offices() {
+    return [
+        'IT', 'Technical', 'Chief Engineer CDO', 'Chief Engineer Center'
+    ];
+}
+
+function designations () {
+    return [
+        'Director IT', 'Deputy Director IT', 'Assistant Director IT', 'Assistant Director GIS', 'Computer Operator',
+        'Assistant', 'Junior Clerk','Senior Clerk','Superintendent', 'Section Officer'
+    ];
+}
+
+
 function authenticated()
 {
     return (isset($_SESSION['user_id'])) ? true : false;
@@ -97,14 +111,31 @@ function request_url()
 {
     if ($_SERVER['HTTP_HOST'] == 'localhost') {
         $array_uri = explode('/', $_SERVER['REQUEST_URI']);
-        return implode('/', array_slice($array_uri, 2));
+        return '/'.implode('/', array_slice($array_uri, 2));
     } else {
-        return implode('/', array_slice(explode('/', $_SERVER['REQUEST_URI']), 1));
+        return '/'.implode('/', array_slice(explode('/', $_SERVER['REQUEST_URI']), 1));
     }
 }
 
 function app_path($file = null) {
     $baseDir = __DIR__ . '/../app/';
+
+    if ($file === null) {
+        return $baseDir;
+    }
+
+    $path = str_replace('.', '/', $file);
+    $fullPath = $baseDir . "{$path}.php";
+
+    if (file_exists($fullPath)) {
+        require_once $fullPath;
+    } else {
+        throw new Exception("File not found: " . $fullPath);
+    }
+}
+
+function storage_path($file = null) {
+    $baseDir = __DIR__ . '/../storage/';
 
     if ($file === null) {
         return $baseDir;

@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function data()
     {
-        $user = User::where('office', 'IT');
+        $user = User::where('status', 0);
         $searchable = ['name', 'email', 'designation', 'office'];
         $records = function ($record) {
             return [
@@ -72,13 +72,54 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return response()->json(['users' => $user]);
+        $data = [
+            'user' => $user
+        ];
+        return view('users/edit', $data);
     }
 
     public function update($id)
     {
         $user = User::find($id);
-        return response()->json(['users' => $user]);
+
+        if (!$user) {
+            setFlash('danger', 'User not found.');
+            return redirectToRoute('users.index');
+        }
+
+        request()->validate([
+            'name' => 'nullable|min:4|max:20|alpha',
+            'email' => 'nullable|email',
+            'mobile_number' => 'nullable|number|mobile',
+            'office' => 'nullable',
+            'designation' => 'nullable',
+            'password' => 'nullable|strong_password',
+            'profile_pic' => 'nullable|file|image|valid_file',
+        ]);
+
+        $file = request()->hasFile('profile_pic') ? request()->file('profile_pic') : null;
+        if ($file) {
+            if ($user->profile_pic) {
+                $this->removeFile($user->profile_pic);
+            }
+
+            $profilePicPath = $this->handleFileUpload($file);
+        } else {
+            $profilePicPath = $user->profile_pic;
+        }
+
+        $user->update([
+            'name' => request('name', $user->name),
+            'email' => request('email', $user->email),
+            'password' => request('password') ? password_hash(request('password'), PASSWORD_BCRYPT) : $user->password,
+            'mobile_number' => request('mobile_number', $user->mobile_number),
+            'office' => request('office', $user->office),
+            'designation' => request('designation', $user->designation),
+            'profile_pic' => $profilePicPath,
+        ]);
+
+        setFlash('success', 'User updated successfully');
+        return redirectToRoute('users.index');
     }
 
     public function show($id)
@@ -92,11 +133,9 @@ class UserController extends Controller
         $user = User::find($id);
         $deleted = $user->delete();
         if ($deleted) {
-            setFlash('success', 'User is delete successfully.');
-            redirectToRoute('users.index');
+            return response()->json(['success' => 'User is delete successfully.']);
         }
-        setFlash('danger', 'There was an error deleting the user.');
-        redirectToRoute('users.index');
+        return response()->json(['error' => 'Uh Oh! User is not deleted']);
     }
 
     private function handleFileUpload($file)
@@ -110,5 +149,14 @@ class UserController extends Controller
             }
         }
         return null;
+    }
+
+    protected function removeFile($filePath)
+    {
+        $fullPath = storage_path(). '/' . $filePath;
+
+        if (file_exists($fullPath)) {
+            unlink($fullPath);
+        }
     }
 }

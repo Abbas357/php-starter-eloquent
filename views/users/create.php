@@ -1,30 +1,29 @@
 <?php
 view_path('layout.base');
-layoutTop('Basic Form');
+layoutTop('Layout Blank');
 ?>
-
 <div class="wrapper">
-  <div class="page has-sidebar has-sidebar-expand-xl">
+  <div class="page">
     <div class="page-inner">
       <header class="page-title-bar">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item active">
-              <a href="#"><i class="breadcrumb-icon fa fa-angle-left mr-2"></i>Forms</a>
+              <a href="<?php route('users.index') ?>"><i class="breadcrumb-icon fa fa-angle-left mr-2"></i>All Users</a>
             </li>
           </ol>
         </nav>
         <h1 class="page-title"> Add User</h1>
         <div class="col">
-        <?php
+          <?php
           $messages = request_errors();
           if ($messages): ?>
             <?php foreach ($messages as $name => $message): ?>
-                <div class="alert alert-danger alert-dismissible fade show">
-                  <button type="button" class="close" data-dismiss="alert">×</button> <strong><?= htmlspecialchars(ucfirst(str_replace('_', ' ', $name))) ?> </strong> <?= htmlspecialchars(ucfirst($message[0])) ?>
-                </div>
+              <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">×</button> <strong><?= htmlspecialchars(ucfirst(str_replace('_', ' ', $name))) ?> </strong> <?= htmlspecialchars(ucfirst($message[0])) ?>
+              </div>
             <?php endforeach; ?>
-        <?php endif; ?>
+          <?php endif; ?>
         </div>
       </header>
       <div class="page-section">
@@ -42,12 +41,12 @@ layoutTop('Basic Form');
                   <div class="invalid-feedback"> Name is required </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                <label for="validationTooltipEmail">Email <abbr title="Required">*</abbr></label>
-                <input type="email" class="form-control" id="validationTooltipEmail" value="<?= old('email') ?>" name="email" placeholder="Email" aria-describedby="inputGroupPrepend" required="">
-                <div id="inputGroupPrepend" class="invalid-tooltip">Please enter valid email</div>
+                  <label for="validationTooltipEmail">Email <abbr title="Required">*</abbr></label>
+                  <input type="email" class="form-control" id="validationTooltipEmail" value="<?= old('email') ?>" name="email" placeholder="Email" aria-describedby="inputGroupPrepend" required="">
+                  <div id="inputGroupPrepend" class="invalid-tooltip">Please enter valid email</div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="d-flex justify-content-between" for="lbl5"><span>Password</span> <a href="#lbl5" data-toggle="password"><i class="fa fa-eye fa-fw"></i> <span>Show</span></a></label> 
+                  <label class="d-flex justify-content-between" for="lbl5"><span>Password</span> <a href="#lbl5" data-toggle="password"><i class="fa fa-eye fa-fw"></i> <span>Show</span></a></label>
                   <input type="password" class="form-control" name="password" value="<?= old('password') ?>" id="lbl5" required>
                   <div class="invalid-feedback"> Password is required </div>
                 </div>
@@ -62,11 +61,11 @@ layoutTop('Basic Form');
                 <div class="col-md-4 mb-3">
                   <label for="validationTooltipCountry">Office <abbr title="Required">*</abbr></label>
                   <select class="custom-select d-block w-100" id="validationTooltipCountry" name="office" required="">
-                      <option value=""> Choose... </option>
-                      <option value="IT" <?= old('office') == 'IT' ? 'selected' : '' ?>> IT </option>
-                      <option value="Technical" <?= old('office') == 'Technical' ? 'selected' : '' ?>> Technical </option>
-                      <option value="Chief Engineer CDO" <?= old('office') == 'Chief Engineer CDO' ? 'selected' : '' ?>> Chief Engineer CDO </option>
-                      <option value="Chief Engineer Center" <?= old('office') == 'Chief Engineer Center' ? 'selected' : '' ?>> Chief Engineer Center </option>
+                    <option value=""> Choose... </option>
+                    <option value="IT" <?= old('office') == 'IT' ? 'selected' : '' ?>> IT </option>
+                    <option value="Technical" <?= old('office') == 'Technical' ? 'selected' : '' ?>> Technical </option>
+                    <option value="Chief Engineer CDO" <?= old('office') == 'Chief Engineer CDO' ? 'selected' : '' ?>> Chief Engineer CDO </option>
+                    <option value="Chief Engineer Center" <?= old('office') == 'Chief Engineer Center' ? 'selected' : '' ?>> Chief Engineer Center </option>
                   </select>
                   <div class="invalid-feedback"> Please select an Office </div>
                 </div>
@@ -84,11 +83,11 @@ layoutTop('Basic Form');
                     <option value="Senior Clerk" <?= old('designation') == 'Senior Clerk' ? 'selected' : '' ?>> Senior Clerk </option>
                     <option value="Superintendent" <?= old('designation') == 'Superintendent' ? 'selected' : '' ?>> Superintendent </option>
                     <option value="Section Officer" <?= old('designation') == 'Section Officer' ? 'selected' : '' ?>> Section Officer </option>
-                </select>
+                  </select>
                   <div class="invalid-feedback"> Please provide a designation </div>
                 </div>
                 <div class="col-md-4 mb-3">
-                <label for="tf3">Profile Picture</label>
+                  <label for="tf3">Profile Picture</label>
                   <div class="custom-file">
                     <input type="file" class="custom-file-input" id="tf3" name="profile_pic" accept=".jpg, jpeg, png, .gif"> <label class="custom-file-label" for="tf3">Choose file</label>
                   </div>
@@ -101,21 +100,9 @@ layoutTop('Basic Form');
           </div>
         </div>
       </div>
-      <?php view_path('includes.footer'); ?>
-      
-    </div>
-    <div class="page-sidebar page-sidebar-fixed">
-      <header class="sidebar-header d-xl-none">
-        <ol class="breadcrumb mb-0">
-          <li class="breadcrumb-item">
-            <a class="prevent-default" href="#" onclick="Looper.toggleSidebar()"><i class="breadcrumb-icon fa fa-angle-left mr-2"></i>Back</a>
-          </li>
-        </ol>
-      </header>
-      <nav id="nav-content" class="nav flex-column mt-4">
-        <a href="#all-users" class="nav-link smooth-scroll">All Users</a>
-      </nav>
     </div>
   </div>
 </div>
-<?php layoutBottom(); ?>
+<?php
+layoutBottom();
+?>
