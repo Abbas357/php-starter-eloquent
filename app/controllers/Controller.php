@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use PDO;
-
 abstract class Controller
 {
     protected function DataTable($query, $searchColumns, $recordFormatter)

@@ -27,6 +27,15 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li class="menu-item has-child <?php echo hasActive('registrations/create') || hasActive('registrations') ? 'has-active' : ''; ?>">
+                        <a href="#" class="menu-link"><span class="menu-icon oi oi-person"></span> <span class="menu-text">Registrations</span></a>
+                        <ul class="menu">
+                            <li class="menu-item <?php echo hasActive('registrations'); ?>">
+                                <a href="<?php route('registrations.index') ?>" class="menu-link">All Registrations</a>
+                            </li>
+                        </ul>
+                    </li>
                     
                 </ul>
             </nav>

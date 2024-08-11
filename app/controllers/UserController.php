@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Support\Storage;
 use App\Models\User;
+use App\Models\Collection;
 
 class UserController extends Controller
 {
@@ -14,7 +15,12 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users/create');
+        $data = [
+            'offices' => Collection::where('type', 'offices')->get(),
+            'designations' => Collection::where('type', 'designations')->get(),
+        ];
+
+        return view('users/create', $data);
     }
 
     public function data()
@@ -73,7 +79,9 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $data = [
-            'user' => $user
+            'user' => $user,
+            'offices' => Collection::where('type', 'offices')->get(),
+            'designations' => Collection::where('type', 'designations')->get(),
         ];
         return view('users/edit', $data);
     }

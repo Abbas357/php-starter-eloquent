@@ -1,18 +1,10 @@
 <?php
 
-function offices() {
+function cat_types() {
     return [
-        'IT', 'Technical', 'Chief Engineer CDO', 'Chief Engineer Center'
+        'offices', 'designations', 'roles', 'permissions'
     ];
 }
-
-function designations () {
-    return [
-        'Director IT', 'Deputy Director IT', 'Assistant Director IT', 'Assistant Director GIS', 'Computer Operator',
-        'Assistant', 'Junior Clerk','Senior Clerk','Superintendent', 'Section Officer'
-    ];
-}
-
 
 function authenticated()
 {
@@ -105,6 +97,16 @@ function redirectToRoute($name, $parameters = [])
     }
     header("Location:" . config('app.url') . '/' . trim($uri, '/'));
     exit;
+}
+
+function csrf_field()
+{
+    return '<input type="hidden" name="_token" value="' . request()->csrfToken() . '">';
+}
+
+function csrf_meta_tag()
+{
+    return '<meta name="csrf-token" content="' . request()->csrfToken() . '">';
 }
 
 function request_url()

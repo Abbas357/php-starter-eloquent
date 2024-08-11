@@ -63,8 +63,8 @@ layoutTop('Basic Form');
                   <label for="validationTooltipCountry">Office <abbr title="Required">*</abbr></label>
                   <select class="custom-select d-block w-100" id="validationTooltipCountry" name="office" required="">
                       <option value=""> Choose... </option>
-                      <?php foreach(offices() as $office): ?>
-                          <option value="<?= $office ?>" <?php echo $user->office === $office ? 'selected' : '' ?>> <?= $office ?> </option>
+                      <?php foreach($offices as $office): ?>
+                          <option value="<?= $office->name ?>" <?php echo $user->office === $office->name ? 'selected' : '' ?>> <?= $office->name ?> </option>
                       <?php endforeach; ?>
                   </select>
 
@@ -74,8 +74,8 @@ layoutTop('Basic Form');
                   <label for="validationTooltipState">Designation <abbr title="Required">*</abbr></label>
                   <select class="custom-select d-block w-100" id="validationTooltipCountry" name="designation" required="">
                       <option value=""> Choose... </option>
-                      <?php foreach(designations() as $designation): ?>
-                          <option value="<?= $designation ?>" <?php echo $user->designation === $designation ? 'selected' : '' ?>> <?= $designation ?> </option>
+                      <?php foreach($designations as $designation): ?>
+                          <option value="<?= $designation->name ?>" <?php echo $user->designation === $designation->name ? 'selected' : '' ?>> <?= $designation->name ?> </option>
                       <?php endforeach; ?>
                   </select>
                   <div class="invalid-feedback"> Please provide a designation </div>

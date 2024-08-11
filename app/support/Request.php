@@ -112,8 +112,13 @@ class Request
     {
         return $this->errors;
     }
+    
     public function validate(array $rules)
     {
+        if (!$this->verifyCsrfToken()) {
+            $this->errors['_token'][] = "Invalid CSRF token.";
+            return;
+        }
         foreach ($rules as $field => $ruleString) {
             $rulesArray = explode('|', $ruleString);
             foreach ($rulesArray as $rule) {
@@ -368,6 +373,28 @@ class Request
             default:
                 break;
         }
+    }
+
+    public function generateCsrfToken()
+    {
+        $_SESSION['_token'] = bin2hex(random_bytes(32));
+        return $_SESSION['_token'];
+    }
+
+    public function csrfToken()
+    {
+        return $_SESSION['_token'] ?? $this->generateCsrfToken();
+    }
+
+    protected function verifyCsrfToken()
+    {
+        $submittedToken = $_POST['_token'];
+        $sessionToken = $_SESSION['_token'];
+
+        if (is_string($submittedToken) && is_string($sessionToken) && hash_equals($sessionToken, $submittedToken)) {
+            return true;
+        }
+        return false;
     }
 
     // request()->validate([

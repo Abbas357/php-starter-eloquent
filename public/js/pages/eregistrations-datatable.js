@@ -48,16 +48,6 @@ $(document).ready(function() {
                   }
               ]
           },
-          top1End: {
-              buttons: [
-                  {
-                      text: '<span class="d-flex align-items-center"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" class="mr-1" height="20px" viewBox="0 0 24 24" width="20px" fill="currentColor"><g><rect fill="none" height="24" width="24"/></g><g><g/><g><path d="M17,19.22H5V7h7V5H5C3.9,5,3,5.9,3,7v12c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2v-7h-2V19.22z"/><path d="M19,2h-2v3h-3c0.01,0.01,0,2,0,2h3v2.99c0.01,0.01,2,0,2,0V7h3V5h-3V2z"/><rect height="2" width="8" x="7" y="9"/><polygon points="7,12 7,14 15,14 15,12 12,12"/><rect height="2" width="8" x="7" y="15"/></g></g></svg> Add User</span>',
-                      action: function ( e, dt, node, config ) {
-                          window.location.href = 'users/create';
-                      }
-                  }
-              ]
-          },
           topStart: {
               pageLength: {
                   menu: [
@@ -73,23 +63,35 @@ $(document).ready(function() {
           },
       },
       columnDefs: [
-          { targets: [0], visible: false },
+          { targets: [0, 3, 4, 9, 10, 11, 13, 14, 15, 16], visible: false },
       ],
       colReorder: true,
       pageLength: 10,
       processing: true,
       serverSide: true,
-      responsive: true,
+      responsive: false,
       ajax: {
-          url: usersUrl,
+          url: eregistrationsUrl,
           dataSrc: "aaData"
       },
       columns: [
         { data: 'id' },
-        { data: 'name' },
-        { data: 'email' },
-        { data: 'designation' },
-        { data: 'office' },
+        { data: 'categoryAppliedFor' },
+        { data: 'NameOfContractor' },
+        { data: 'address' },
+        { data: 'categoryPEC' },
+        { data: 'CNICNumber' },
+        { data: 'district' },
+        { data: 'pec_no' },
+        { data: 'owner_name' },
+        { data: 'fbrNONTN' },
+        { data: 'KPRARegNo' },
+        { data: 'Email' },
+        { data: 'mobNo' },
+        { data: 'RegLimted' },
+        { data: 'agree' },
+        { data: 'created_at' },
+        { data: 'status' },
         {
             data: null,
             orderable: false,
@@ -97,11 +99,14 @@ $(document).ready(function() {
             render: function(data, type, row) {
                 return `
                     <div class="action-btns">
+                        <span class="view-btn badge badge-pill badge-secondary" data-id="${row.id}">
+                            VIEW
+                        </span>
                         <span class="edit-btn badge badge-pill badge-secondary" data-id="${row.id}">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M216-216h51l375-375-51-51-375 375v51Zm-72 72v-153l498-498q11-11 23.84-16 12.83-5 27-5 14.16 0 27.16 5t24 16l51 51q11 11 16 24t5 26.54q0 14.45-5.02 27.54T795-642L297-144H144Zm600-549-51-51 51 51Zm-127.95 76.95L591-642l51 51-25.95-25.05Z"/></svg>
+                            DEFER (${row.defer})
                         </span>
                         <span class="delete-btn badge badge-pill badge-secondary" data-id="${row.id}">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                            DELETE
                         </span>
                     </div>
                 `;
@@ -114,16 +119,31 @@ $(document).ready(function() {
       fnDrawCallback() {
           $('#users-datatable').removeClass('data-table-loading');
 
+          $('.view-btn').on('click', function() {
+            var registrationId = $(this).data('id');
+            window.location.href = `registrations/${registrationId}`;
+        });
+
           $('.edit-btn').on('click', function() {
-            var userId = $(this).data('id');
-            window.location.href = `users/${userId}/edit`;
+            var registrationId = $(this).data('id');
+            if(confirm('Are you sure you want to defer?')) {
+                $.ajax({
+                    url: `registrations/${registrationId}`,
+                    type: 'PATCH',
+                    success: function(result) {
+                        if(result.success) {
+                            $('#users-datatable').DataTable().ajax.reload();
+                        }
+                    }
+                });
+            }
         });
         
         $('.delete-btn').on('click', function() {
-            var userId = $(this).data('id');
-            if(confirm('Are you sure you want to delete this user?')) {
+            var registrationId = $(this).data('id');
+            if(confirm('Are you sure you want to delete this registrations?')) {
                 $.ajax({
-                    url: `users/${userId}`,
+                    url: `registrations/${registrationId}`,
                     type: 'DELETE',
                     success: function(result) {
                         if(result.success) {

@@ -56,7 +56,7 @@ layoutTop('Filter Columns', [
 <?php
 layoutBottom([
   "js/datatables.min.js",
-  "js/pages/dataTables.bootstrap.js",
+  "js/pages/users-datatable.js",
 
 ]);
 ?>

@@ -21,7 +21,8 @@ div.dt-container .dropdown-toggle:after {
 }
 
 div.dt-container .dt-search input:focus {
-    box-shadow: 0 0 8px 0 #7076eb;
+    border: 1px solid #575757;
+    box-shadow: 0 0 8px 0 #999;
 }
 
 div.dt-container .dt-button-down-arrow {

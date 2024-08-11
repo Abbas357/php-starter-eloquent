@@ -1,6 +1,6 @@
 <?php
-view_path('layout.base');
-layoutTop('Layout Blank');
+view_path('layout.guest');
+layoutTop('Online Registration');
 ?>
 <div class="wrapper">
   <div class="page">
