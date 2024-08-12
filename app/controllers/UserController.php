@@ -111,7 +111,7 @@ class UserController extends Controller
                 $this->removeFile($user->profile_pic);
             }
 
-            $profilePicPath = $this->handleFileUpload($file);
+            $profilePicPath = Storage::save($file, 'images/users', 'image');
         } else {
             $profilePicPath = $user->profile_pic;
         }

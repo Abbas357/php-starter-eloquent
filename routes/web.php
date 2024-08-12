@@ -4,7 +4,8 @@ use App\Support\Router;
 
 Router::get('/', 'HomeController@index')->name('dashboard');
 
-// Auth 
+// Auth
+
 Router::get('/login', 'AuthController@index')->name('auth.index');
 Router::post('/login', 'AuthController@login')->name('auth.login');
 Router::post('/logout', 'AuthController@logout')->name('auth.logout');
@@ -30,7 +31,7 @@ Router::delete('/users/{id}', 'UserController@delete')->name('users.delete');
 
 Router::get('/registrations', 'ERegistrationController@index')->name('registrations.index');
 Router::get('/registrations-data', 'ERegistrationController@data')->name('registrations.data');
-Router::get('/registrations/create', 'ERegistrationController@create')->name('registrations.create');
+Router::get('/registrations/apply', 'ERegistrationController@create')->name('registrations.apply');
 Router::post('/registrations', 'ERegistrationController@store')->name('registrations.store');
 Router::get('/registrations/{id}', 'ERegistrationController@show')->name('registrations.show');
 Router::patch('/registrations/{id}', 'ERegistrationController@defer')->name('registrations.defer');

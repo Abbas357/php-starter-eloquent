@@ -1,6 +1,6 @@
 <?php
 app_path('init');
-if (authenticated()) redirect('index');
+if (authenticated()) redirect('/');
 function layoutTop($pageTitle = 'Page', $additionalCSS = [])
 {
     echo "<!DOCTYPE html>

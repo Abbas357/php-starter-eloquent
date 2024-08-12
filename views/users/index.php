@@ -51,7 +51,7 @@ layoutTop('Filter Columns', [
   </div>
 </div>
 <script>
-  var usersUrl = "<?php route('users.data') ?>";
+  var dataTableURL = "<?php route('users.data') ?>";
 </script>
 <?php
 layoutBottom([

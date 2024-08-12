@@ -81,7 +81,7 @@ $(document).ready(function() {
       serverSide: true,
       responsive: true,
       ajax: {
-          url: usersUrl,
+          url: dataTableURL,
           dataSrc: "aaData"
       },
       columns: [

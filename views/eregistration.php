@@ -1,19 +1,14 @@
 <?php
 view_path('layout.guest');
-layoutTop('Online Registration');
+layoutTop('Online Registration', [
+  "vendor/bootstrap-select/css/bootstrap-select.min.css",
+]);
 ?>
 <div class="wrapper">
   <div class="page">
     <div class="page-inner">
       <header class="page-title-bar">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item active">
-              <a href="<?php route('users.index') ?>"><i class="breadcrumb-icon fa fa-angle-left mr-2"></i>All Users</a>
-            </li>
-          </ol>
-        </nav>
-        <h1 class="page-title"> Add User</h1>
+        <h1 class="page-title"> Online Registration</h1>
         <div class="col">
           <?php
           $messages = request_errors();
@@ -27,75 +22,225 @@ layoutTop('Online Registration');
         </div>
       </header>
       <div class="page-section">
-        <div class="d-xl-none">
-          <button class="btn btn-danger btn-floated" type="button" data-toggle="sidebar"><i class="fa fa-th-list"></i></button>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title"> Fill all the fields </h3>
-            <form class="needs-validation" action="<?php route('users.store') ?>" method="post" enctype="multipart/form-data" novalidate="">
-              <div class="form-row">
-              <?= csrf_field() ?>
-                <div class="col-md-6 mb-3">
-                  <label for="validationTooltip01">Name<abbr title="Required">*</abbr></label>
-                  <input type="text" class="form-control" id="validationTooltip01" value="<?= old('name') ?>" placeholder="Name" name="name" required="">
-                  <div class="invalid-feedback"> Name is required </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="validationTooltipEmail">Email <abbr title="Required">*</abbr></label>
-                  <input type="email" class="form-control" id="validationTooltipEmail" value="<?= old('email') ?>" name="email" placeholder="Email" aria-describedby="inputGroupPrepend" required="">
-                  <div id="inputGroupPrepend" class="invalid-tooltip">Please enter valid email</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="d-flex justify-content-between" for="lbl5"><span>Password</span> <a href="#lbl5" data-toggle="password"><i class="fa fa-eye fa-fw"></i> <span>Show</span></a></label>
-                  <input type="password" class="form-control" name="password" value="<?= old('password') ?>" id="lbl5" required>
-                  <div class="invalid-feedback"> Password is required </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="validationTooltipMobileNumber">Mobile Number</label>
-                  <input type="text" class="form-control" id="validationTooltipMobileNumber" value="<?= old('mobile_number') ?>" name="mobile_number" required placeholder="Mobile Number" aria-describedby="inputGroupPrepend">
-                  <div id="inputGroupPrepend" class="invalid-tooltip"> Please enter Mobile Number</div>
-                  <div id="inputGroupPrepend" class="valid-tooltip"> Looks Good</div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="col-md-4 mb-3">
-                  <label for="validationTooltipCountry">Office <abbr title="Required">*</abbr></label>
-                  <select class="custom-select d-block w-100" id="validationTooltipCountry" name="office" required="">
-                      <option value=""> Choose... </option>
-                      <?php foreach($offices as $office): ?>
-                          <option value="<?= $office->name ?>"> <?= $office->name ?> </option>
-                      <?php endforeach; ?>
-                  </select>
-                  <div class="invalid-feedback"> Please select an Office </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="validationTooltipState">Designation <abbr title="Required">*</abbr></label>
-                  <select class="custom-select d-block w-100" id="validationTooltipCountry" name="designation" required="">
-                      <option value=""> Choose... </option>
-                      <?php foreach($designations as $designation): ?>
-                          <option value="<?= $designation->name ?>"> <?= $designation->name ?> </option>
-                      <?php endforeach; ?>
-                  </select>
-                  <div class="invalid-feedback"> Please provide a designation </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="tf3">Profile Picture</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="tf3" name="profile_pic" accept=".jpg, jpeg, png, .gif"> <label class="custom-file-label" for="tf3">Choose file</label>
+
+        <form class="needs-validation" action="<?php route('users.store') ?>" method="post" enctype="multipart/form-data" novalidate="">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title"> Fill all the fields </h3>
+
+                  <div class="form-row">
+                    <?= csrf_field() ?>
+                    <div class="col mb-3">
+                      <label for="validationTooltip01">Name of Owner <abbr title="Required"> *</abbr></label>
+                      <input type="text" class="form-control" id="validationTooltip01" value="<?= old('nameOfOwner') ?>" placeholder="Name of Owner" name="nameOfOwner" required>
+                      <div class="invalid-feedback"> Name of Owner is required </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip02">District <abbr title="Required"> *</abbr></label>
+                      <select class="custom-select d-block w-100" id="validationTooltip02" name="district" required>
+                        <option value=""> Choose... </option>
+                        <?php foreach ($districts as $district): ?>
+                          <option value="<?= $district->name ?>"> <?= $district->name ?> </option>
+                        <?php endforeach; ?>
+                      </select>
+                      <div class="invalid-feedback"> Please select a District</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip03">PEC No. <abbr title="Required"> *</abbr></label>
+                      <input type="text" class="form-control" id="validationTooltip03" value="<?= old('pec_no') ?>" placeholder="PEC No" name="pec_no" required>
+                      <div class="invalid-feedback"> PEC No is required </div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip04">Category applied for <abbr title="Required"> *</abbr></label>
+                      <select class="custom-select d-block w-100" id="validationTooltip04" name="categoryAppliedFor" required>
+                        <option value=""> Choose... </option>
+                        <?php foreach ($categoryAppliedFor as $category): ?>
+                          <option value="<?= $category->name ?>"> <?= $category->name ?> </option>
+                        <?php endforeach; ?>
+                      </select>
+                      <div class="invalid-feedback"> Please select a category </div>
+                    </div>
+                    <div class="col mb-3">
+                      <label for="validationTooltip05">Name of Contractor /Firm /Company
+                         <abbr title="Required"> *</abbr></label>
+                      <input type="text" class="form-control" id="validationTooltip05" value="<?= old('NameOfContractor') ?>" placeholder="Name of Contractor /Firm /Company" name="NameOfContractor" required>
+                      <div class="invalid-feedback"> Name of Contractor/Firm/Company is required </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="col mb-3">
+                      <label for="validationTooltip06">Address (as per PEC)
+                         <abbr title="Required"> *</abbr></label>
+                      <input type="text" class="form-control" id="validationTooltip06" value="<?= old('address') ?>" placeholder="Address" name="address" required>
+                      <div class="invalid-feedback"> Address is required </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip07">PEC Category <abbr title="Required"> *</abbr></label>
+                      <select class="custom-select d-block w-100" id="validationTooltip07" name="categoryPEC" required>
+                        <option value=""> Choose... </option>
+                        <?php foreach ($pecCategory as $pec): ?>
+                          <option value="<?= $pec->name ?>"> <?= $pec->name ?> </option>
+                        <?php endforeach; ?>
+                      </select>
+                      <div class="invalid-feedback"> Please select a PEC Category </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip08">CNIC No <abbr title="Required"> *</abbr></label>
+                      <input type="text" class="form-control" id="validationTooltip08" value="<?= old('CNICNumber') ?>" placeholder="CNIC" name="CNICNumber" required>
+                      <div class="invalid-feedback"> CNIC is required </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip09">FBR Registration No <abbr title="Required"> *</abbr></label>
+                      <input type="text" class="form-control" id="validationTooltip09" value="<?= old('fbrNONTN') ?>" placeholder="FBR Registration No" name="fbrNONTN" required>
+                      <div class="invalid-feedback"> FBR Registration No. is required </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip10">KIPPRA Registration No <abbr title="Required"> *</abbr></label>
+                      <input type="text" class="form-control" id="validationTooltip10" value="<?= old('KPRARegNo') ?>" placeholder="KPRA Registration No" name="KPRARegNo" required>
+                      <div class="invalid-feedback"> KPRA Registration No. is required </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip11">Email Address <abbr title="Required"> *</abbr></label>
+                      <input type="email" class="form-control" id="validationTooltip11" value="<?= old('Email') ?>" placeholder="Email Address" name="Email" required>
+                      <div class="invalid-feedback"> Email is required </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="validationTooltip12">Mobile No. <abbr title="Required"> *</abbr></label>
+                      <input type="text" class="form-control" id="validationTooltip12" value="<?= old('mobNo') ?>" placeholder="Mobile No" name="mobNo" required>
+                      <div class="invalid-feedback"> Mobile No. is required </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label class="control-label" for="validationTooltip13">In Case of already enlisted in Provencial Department / Orginazation / Board</label> 
+                      <select id="validationTooltip13" data-toggle="selectpicker" data-actions-box="true" name="enlist[]" data-width="100%" multiple>
+                        <?php foreach ($alreadyEnlisted as $enlisted): ?>
+                          <option value="<?= $enlisted->name ?>"> <?= $enlisted->name ?> </option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                    <div class="col-md-6 list-group-item d-flex justify-content-between align-items-center">
+                      <span>Is Your firm registered/ Limted *</span>
+                      <div>
+                        <label for="validationTooltip21" class="switcher-control switcher-control-success switcher-control-lg">
+                        <input type="checkbox" class="switcher-input" name="RegLimted" id="validationTooltip21" required> <span class="switcher-indicator"></span> <span class="switcher-label-on"><i class="fas fa-check"></i></span> <span class="switcher-label-off"><i class="fas fa-times"></i></span></label>
+                        <div class="invalid-feedback"> Required </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="form-actions">
-                <button class="btn btn-primary" type="submit">Add User</button>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title"> Upload relevent documents </h3>
+                  <div class="mb-3">
+                    <label for="validationTooltip14">CNIC (Front Side) <abbr title="Required"> *</abbr></label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="validationTooltip14" name="cnicFront" required> <label class="custom-file-label" for="tf3">Choose file</label>
+                      <div class="invalid-feedback"> CNIC is required </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="validationTooltip14">CNIC (Back Side) <abbr title="Required"> *</abbr></label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="validationTooltip14" name="cnicBack" required> <label class="custom-file-label" for="tf3">Choose file</label>
+                      <div class="invalid-feedback"> CNIC is required </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="validationTooltip15">FBR Registration <abbr title="Required"> *</abbr></label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="validationTooltip15" name="fbrRegistration" required> <label class="custom-file-label" for="tf3">Choose file</label>
+                      <div class="invalid-feedback"> FBR is required </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="validationTooltip16">KIPPRA Certificate<abbr title="Required"> *</abbr></label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="validationTooltip16" name="kippraCertificate" required> <label class="custom-file-label" for="tf3">Choose file</label>
+                      <div class="invalid-feedback"> KIPRA is required </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="validationTooltip17">PEC - 2020 <abbr title="Required"> *</abbr></label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="validationTooltip17" name="pecCert" required> <label class="custom-file-label" for="tf3">Choose file</label>
+                      <div class="invalid-feedback"> PEC - 2020 is required </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="validationTooltip18">Form - H (Incase of Company)</label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="validationTooltip18" name="FormH"> <label class="custom-file-label" for="tf3">Choose file</label>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="validationTooltip19">Previous Enlistment (Not for fresh contractors)</label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="validationTooltip19" name="previousEnlistment" > <label class="custom-file-label" for="tf3">Choose file</label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <label for="validationTooltip20">Declaration</label>
+                        <input type="checkbox" class="custom-control-input" value="agree" id="validationTooltip20" required>
+                        <label class="custom-control-label badge badge-subtle badge-info" for="validationTooltip20" style="white-space: normal; text-align:left; word-wrap: break-word;">
+                            I Certify that the information given in this application form is correct to the best of
+                            my knowledge & belief and I further understand that in case any information is found to be incorrect later on, my enlistment is liable to be cancelled.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary btn-block" type="submit" id="submitBtn" disabled>Apply</button>
+                </div>
+
+                <script>
+                    const checkbox = document.getElementById('validationTooltip20');
+                    const submitBtn = document.getElementById('submitBtn');
+
+                    checkbox.addEventListener('change', function() {
+                        submitBtn.disabled = !checkbox.checked;
+                    });
+                </script>
+
+                </div>
               </div>
-            </form>
+            </div>
           </div>
-        </div>
+        </form>
+
       </div>
+
     </div>
   </div>
 </div>
 <?php
-layoutBottom();
+layoutBottom([
+  "vendor/bootstrap-select/js/bootstrap-select.min.js",
+]);
 ?>

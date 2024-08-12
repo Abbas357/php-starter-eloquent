@@ -71,7 +71,7 @@ $(document).ready(function() {
       serverSide: true,
       responsive: false,
       ajax: {
-          url: eregistrationsUrl,
+          url: dataTableURL,
           dataSrc: "aaData"
       },
       columns: [
@@ -102,11 +102,8 @@ $(document).ready(function() {
                         <span class="view-btn badge badge-pill badge-secondary" data-id="${row.id}">
                             VIEW
                         </span>
-                        <span class="edit-btn badge badge-pill badge-secondary" data-id="${row.id}">
+                        <span class="defer-btn badge badge-pill badge-secondary" data-id="${row.id}">
                             DEFER (${row.defer})
-                        </span>
-                        <span class="delete-btn badge badge-pill badge-secondary" data-id="${row.id}">
-                            DELETE
                         </span>
                     </div>
                 `;
@@ -124,27 +121,12 @@ $(document).ready(function() {
             window.location.href = `registrations/${registrationId}`;
         });
 
-          $('.edit-btn').on('click', function() {
+          $('.defer-btn').on('click', function() {
             var registrationId = $(this).data('id');
             if(confirm('Are you sure you want to defer?')) {
                 $.ajax({
                     url: `registrations/${registrationId}`,
                     type: 'PATCH',
-                    success: function(result) {
-                        if(result.success) {
-                            $('#users-datatable').DataTable().ajax.reload();
-                        }
-                    }
-                });
-            }
-        });
-        
-        $('.delete-btn').on('click', function() {
-            var registrationId = $(this).data('id');
-            if(confirm('Are you sure you want to delete this registrations?')) {
-                $.ajax({
-                    url: `registrations/${registrationId}`,
-                    type: 'DELETE',
                     success: function(result) {
                         if(result.success) {
                             $('#users-datatable').DataTable().ajax.reload();

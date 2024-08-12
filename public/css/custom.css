@@ -99,16 +99,18 @@ div.dt-container .dt-paging .dt-paging-button.current {
 }
 
 .action-btns span {
-    padding: 5px;
     cursor: pointer;
+    border: 1px solid #999;
+    padding: 4px 7px;
+    margin-bottom: 2px;
 }
-.action-btns span.delete-btn:hover {
-    padding: 5px;
+
+.action-btns span.defer-btn:hover {
     cursor: pointer;
-    color:red
+    color:crimson
 }
-.action-btns span.edit-btn:hover {
-    padding: 5px;
+
+.action-btns span.view-btn:hover {
     cursor: pointer;
-    color:blue
+    color:cornflowerblue
 }

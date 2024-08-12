@@ -85,13 +85,50 @@ class Router
 
             if (preg_match($routePattern, $uri, $matches)) {
                 array_shift($matches); // Remove the full match
-                return self::callControllerMethod($controllerMethod, $matches, $queryParams);
+
+                try {
+                    return self::callControllerMethod($controllerMethod, $matches, $queryParams);
+                } catch (\Exception $e) {
+                    // Handle the exception and return 404
+                    self::abort404();
+                }
             }
         }
 
+        self::abort404();
+    }
+
+    protected static function abort404()
+    {
         http_response_code(404);
         require "../views/errors/404.php";
+        exit();
     }
+
+    // public static function dispatch($requestUri, $requestMethod)
+    // {
+    //     $parsedUrl = parse_url($requestUri);
+    //     $uri = trim($parsedUrl['path'], '/');
+    //     $method = strtoupper($requestMethod);
+
+    //     $queryParams = [];
+    //     if (isset($parsedUrl['query'])) {
+    //         parse_str($parsedUrl['query'], $queryParams);
+    //     }
+
+    //     foreach (self::$routes[$method] as $routeUri => $controllerMethod) {
+    //         $routePattern = preg_replace('/\{[^\}]+\}/', '([^/]+)', $routeUri);
+    //         $routePattern = "@^" . trim($routePattern, '/') . "$@";
+
+    //         if (preg_match($routePattern, $uri, $matches)) {
+    //             array_shift($matches); // Remove the full match
+    //             return self::callControllerMethod($controllerMethod, $matches, $queryParams);
+    //         }
+    //     }
+
+    //     http_response_code(404);
+    //     require "../views/errors/404.php";
+    // }
 
     protected static function callControllerMethod($controllerMethod, $params = [])
     {

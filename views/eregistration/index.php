@@ -28,55 +28,55 @@ layoutTop('Filter Columns', [
               ID
             </th>
             <th scope="col" class="p-3">
-            categoryAppliedFor
+              categoryAppliedFor
             </th>
             <th scope="col" class="p-3">
-            NameOfContractor
+              NameOfContractor
             </th>
             <th scope="col" class="p-3">
-            address
+              address
             </th>
             <th scope="col" class="p-3">
-            categoryPEC
+              categoryPEC
             </th>
             <th scope="col" class="p-3">
-            CNICNumber
+              CNICNumber
             </th>
             <th scope="col" class="p-3">
-            district
+              district
             </th>
             <th scope="col" class="p-3">
-            pec_no
+              pec_no
             </th>
             <th scope="col" class="p-3">
-            owner_name
+              owner_name
             </th>
             <th scope="col" class="p-3">
-            fbrNONTN
+              fbrNONTN
             </th>
             <th scope="col" class="p-3">
-            KPRARegNo
+              KPRARegNo
             </th>
             <th scope="col" class="p-3">
-            Email
+              Email
             </th>
             <th scope="col" class="p-3">
-            mobNo
+              mobNo
             </th>
             <th scope="col" class="p-3">
-            RegLimted
+              RegLimted
             </th>
             <th scope="col" class="p-3">
-            agree
+              agree
             </th>
             <th scope="col" class="p-3">
-            created_at
+              created_at
             </th>
             <th scope="col" class="p-3">
-            status
+              status
             </th>
             <th scope="col" class="p-3">
-            Actions
+              Actions
             </th>
           </thead>
           <tbody>
@@ -87,7 +87,7 @@ layoutTop('Filter Columns', [
   </div>
 </div>
 <script>
-  var eregistrationsUrl = "<?php route('registrations.data') ?>";
+  var dataTableURL = "<?php route('registrations.data') ?>";
 </script>
 <?php
 layoutBottom([

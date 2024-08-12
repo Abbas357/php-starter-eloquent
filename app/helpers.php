@@ -2,7 +2,7 @@
 
 function cat_types() {
     return [
-        'offices', 'designations', 'roles', 'permissions'
+        'office', 'designation', 'role', 'permission'
     ];
 }
 
