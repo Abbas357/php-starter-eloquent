@@ -114,3 +114,12 @@ div.dt-container .dt-paging .dt-paging-button.current {
     cursor: pointer;
     color:cornflowerblue
 }
+
+.nav-link {
+    cursor: pointer;
+    user-select: none;
+}
+
+.nav-link.active {
+    background-color: #394ec611 !important;
+}

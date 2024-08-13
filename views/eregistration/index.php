@@ -20,6 +20,24 @@ layoutTop('Filter Columns', [
           <h1 class="page-title mr-sm-auto"> E-Registrations</h1>
           <div id="dt-buttons" class="btn-toolbar"></div>
         </div>
+        <div class="card">
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+              <li class="nav-item">
+                <a id="tab-defer0" class="nav-link active" data-toggle="tab">Not Deferred</a>
+              </li>
+              <li class="nav-item">
+                <a id="tab-defer1" class="nav-link" data-toggle="tab">Deferred 1</a>
+              </li>
+              <li class="nav-item">
+                <a id="tab-defer2" class="nav-link" data-toggle="tab">Deferred 2</a>
+              </li>
+              <li class="nav-item">
+                <a id="tab-defer3" class="nav-link" data-toggle="tab">Deferred 3</a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </header>
       <div class="page-section">
         <table id="users-datatable" class="table table-striped table-hover">
@@ -87,8 +105,9 @@ layoutTop('Filter Columns', [
   </div>
 </div>
 <script>
-  var dataTableURL = "<?php route('registrations.data') ?>";
+  var dataTableURL = "registrations-data?defer=0";
 </script>
+
 <?php
 layoutBottom([
   "js/datatables.min.js",

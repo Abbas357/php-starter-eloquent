@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Support\Storage;
 
 use App\Models\ERegistration;
+use App\Models\Collection;
+use App\Models\District;
 
 class ERegistrationController extends Controller
 {
@@ -15,7 +17,12 @@ class ERegistrationController extends Controller
 
     public function create()
     {
-        return view('eregistration');
+        $data = [
+            'districts' => District::all(),
+            'contractor_category' => Collection::where('type', 'contractor_category')->get(),
+            'provincial_entities' => Collection::where('type', 'provincial_entities')->get(),
+        ];
+        return view('eregistration', $data);
     }
 
     public function data()
@@ -51,12 +58,13 @@ class ERegistrationController extends Controller
 
     public function store()
     {
+        // dd(request());
         request()->validate([
             'nameOfOwner' => 'required|min:4|max:100|alpha',
-            'email' => 'required|email|unique:onlinecontreg,email',
-            'mobNo' => 'required|number|mobile|digits_between:10,15',
+            'Email' => 'required|email|unique:onlinecontreg,email',
+            'mobNo' => 'required|mobile',
             'pec_no' => 'required|min:4|max:20',
-            'CNICNumber' => 'required|digits:13',
+            'CNICNumber' => 'required|cnic',
             'fbrNONTN' => 'required',
             'KPRARegNo' => 'required',
             'district' => 'required',
@@ -65,13 +73,13 @@ class ERegistrationController extends Controller
             'address' => 'required|min:10|max:255',
             'categoryPEC' => 'required',
             'RegLimted' => 'required',
-            'cnicFront' => 'required|file|valid_file|mimes:jpeg,png,pdf',
-            'cnicBack' => 'required|file|valid_file|mimes:jpeg,png,pdf',
-            'fbrRegistration' => 'required|file|valid_file|mimes:jpeg,png,pdf',
-            'kippraCertificate' => 'required|file|valid_file|mimes:jpeg,png,pdf',
-            'pecCert' => 'required|file|valid_file|mimes:jpeg,png,pdf',
-            'FormH' => 'nullable|file|valid_file|mimes:jpeg,png,pdf',
-            'previousEnlistment' => 'nullable|file|valid_file|mimes:jpeg,png,pdf',
+            'cnicFront' => 'required|file|valid_file',
+            'cnicBack' => 'required|file|valid_file',
+            'fbrRegistration' => 'required|file|valid_file',
+            'kippraCertificate' => 'required|file|valid_file',
+            'pecCert' => 'required|file|valid_file',
+            'FormH' => 'nullable|file|valid_file',
+            'previousEnlistment' => 'nullable|file|valid_file',
             'agree' => 'required|boolean',
         ]);
 
@@ -85,7 +93,7 @@ class ERegistrationController extends Controller
 
         $registration = new ERegistration();
         $registration->owner_name = request('nameOfOwner');
-        $registration->email = request('email');
+        $registration->email = request('Email');
         $registration->mobNo = request('mobNo');
         $registration->pec_no = request('pec_no');
         $registration->CNICNumber = request('CNICNumber');
@@ -103,7 +111,7 @@ class ERegistrationController extends Controller
         $registration->KIPRAUpload = $kippraCertificate;
         $registration->PEC2020 = $pecCert;
         $registration->FormHUpload = $formH;
-        $registration->PreEnlistmentUpload = $previousEnlistment;
+        $registration->PreEnlistmentUpload = json_encode($previousEnlistment);
         $registration->agree = request('agree');
         $registration->status = 'pending';
         $registration->save();
@@ -120,16 +128,11 @@ class ERegistrationController extends Controller
     public function defer($id)
     {
         $ERegistration = ERegistration::find($id);
-        if ($ERegistration) {
-            if ($ERegistration->defer < 2) {
-                $ERegistration->defer += 1;
-                $ERegistration->save();
-                return response()->json(['success' => 'Registration has been deferred successfully.']);
-            } else {
-                $ERegistration->delete();
-                return response()->json(['success' => 'Registration has been deleted successfully.']);
-            }
+        if ($ERegistration->defer < 3) {
+            $ERegistration->defer += 1;
+            $ERegistration->save();
+            return response()->json(['success' => 'Registration has been deferred successfully.']);
         }
-        return response()->json(['error' => 'Uh Oh! Registration not found.']);
+        return response()->json(['error' => 'Registration can\'t be deferred further.']);
     }
 }
