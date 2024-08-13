@@ -20,8 +20,10 @@ layoutTop('Filter Columns', [
           <h1 class="page-title mr-sm-auto"> E-Registrations</h1>
           <div id="dt-buttons" class="btn-toolbar"></div>
         </div>
-        <div class="card">
-          <div class="card-header">
+      </header>
+      <div class="page-section">
+      <section class="card pb-2 pt-1 px-1">
+          <div class="card-header mb-3">
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item">
                 <a id="tab-defer0" class="nav-link active" data-toggle="tab">Not Deferred</a>
@@ -37,9 +39,6 @@ layoutTop('Filter Columns', [
               </li>
             </ul>
           </div>
-        </div>
-      </header>
-      <div class="page-section">
         <table id="users-datatable" class="table table-striped table-hover">
           <thead>
             <th scope="col" class="p-3">
@@ -100,6 +99,7 @@ layoutTop('Filter Columns', [
           <tbody>
           </tbody>
         </table>
+        </section>
       </div>
     </div>
   </div>
